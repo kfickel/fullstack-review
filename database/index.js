@@ -32,7 +32,7 @@ let save = (obj) => {
     if (err) {
       return handleError(err);
     }
-    return 'Saved';
+    console.log('Saved ', obj);
   })
   // TODO: Your code here
   // This function should save a repo or repos to
