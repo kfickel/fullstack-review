@@ -1,12 +1,17 @@
 import React from 'react';
 
+const titleStyle = {
+  fontWeight: 'bold'
+}
+
 const RepoListEntry = (props) => (
   <div>
     <li>
-      Username:  {props.value.login}.   
-      <div><a href={props.value.repoUrl}>  Repo: {props.value.repoName}</a></div>
-      <div> Forks: {props.value.forks}</div>
-      </li>
+      <span style={{fontWeight: 'bold'}}>Username: </span>{props.value.login}  
+      <div><span style={{fontWeight: 'bold'}}>Repo: </span><a href={props.value.repoUrl}> {props.value.repoName}</a></div>
+      <div><span style={{fontWeight: 'bold'}}>Forks: </span>{props.value.forks}</div>
+    </li>
+    <p/>
   </div>
 )
 
