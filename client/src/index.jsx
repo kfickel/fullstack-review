@@ -34,7 +34,6 @@ class App extends React.Component {
       type: "GET",
       url: 'http://127.0.0.1:1128/repos',
       success: (data) => {
-        // repos = data;
         console.log('success UPDATE', data);
         this.update(data);
       },
@@ -47,6 +46,8 @@ class App extends React.Component {
   update(repos){
     this.setState({
           repos: repos
+    }, function() {
+      console.log(this.repos);
     });
   }
 

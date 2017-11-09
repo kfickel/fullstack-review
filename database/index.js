@@ -20,7 +20,8 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (arrObj) => {
+let save = (arrObj, cb) => {
+  console.log('SAVE')
   for (var i = 0 ; i < arrObj.length; i++) {
     let obj = arrObj[i];
     Repo.find({repoId: obj.id}, function(err, repo) {
@@ -59,10 +60,10 @@ let save = (arrObj) => {
           })
       }
     })
+    if (i === arrObj.length - 1) {
+      cb();
+    }
   }
-  // TODO: Your code here
-  // This function should save a repo or repos to
-  // the MongoDB
 }
 
 let retrieve = (cb) => {

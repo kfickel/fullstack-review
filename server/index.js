@@ -6,15 +6,15 @@ let app = express();
 app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/repos', function (req, res) {
-  // TODO - your code here!
   var username = '';
   req.on('data', function (chunk) {
     username += chunk;
   });
   req.on('end', function () {
-    console.log('data ', username);
-    github.getReposByUsername(username);
-    res.status(201).send('');
+    console.log('HERE')
+    github.getReposByUsername(username, function() {
+      res.status(201).send('');
+    });
   })
   // This route should take the github username provided
   // and get the repo information from the github API, then
@@ -22,12 +22,9 @@ app.post('/repos', function (req, res) {
 });
 
 app.get('/repos', function (req, res) {
-  console.log('here');
-  // TODO - your code here!
   db.retrieve(function(repos) {
     res.send(repos);
   })
-  // This route should send back the top 25 repos
 });
 
 let port = 1128;
