@@ -21,17 +21,14 @@ let repoSchema = mongoose.Schema({
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (arrObj) => {
-  // console.log('array ', arrObj);
   for (var i = 0 ; i < arrObj.length; i++) {
     let obj = arrObj[i];
     Repo.find({repoId: obj.id}, function(err, repo) {
       if (err) {
         handleError(err);
       }
-      console.log('REPO ', repo);
       if(repo[0] !== undefined) {
         if (repo[0].repoId !== obj.id){
-          console.log('ID ', obj.id);
           Repo.create({
             ownerId: obj.owner.id,
             login: obj.owner.login,
@@ -62,18 +59,18 @@ let save = (arrObj) => {
           })
       }
     })
-    // .then (function (repoObj) {
-    //   console.log('OBJ ', repoObj);
-    //   if (repoObj.id !== obj.id) {
-    //   }
-    // })
-    // .catch(function(obj) {
-    //   console.log('here');
-    // })
   }
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
 }
 
+let retrieve = (cb) => {
+  Repo.find({}).sort({forks: -1}).exec(function (err, results) {
+      cb(results.slice(0,24));
+    })
+
+}
+
 module.exports.save = save;
+module.exports.retrieve = retrieve;
