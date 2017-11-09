@@ -9,7 +9,7 @@ let repoSchema = mongoose.Schema({
   //login = owner.login
   login: String,
   //fileId = id
-  fileId: Number,
+  repoId: Number,
   //repoUrl = html_url
   repoUrl: String,
   //fileName = name
@@ -21,18 +21,26 @@ let repoSchema = mongoose.Schema({
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (obj) => {
-  Repo.create({
-    ownerId: obj.owner.id,
-    login: obj.owner.login,
-    fileId: obj.id,
-    repoUrl: obj.html_url,
-    fileName: obj.name,
-    forks: obj.forks
-  }, function (err, obj) {
-    if (err) {
-      return handleError(err);
+  Repo.find({repoId: obj.id})
+  .then (function (repoObj) {
+    if (repoObj.id === obj.id) {
+      throw repoObj;
     }
-    console.log('Saved ', obj);
+  })
+  .catch(function() {
+    Repo.create({
+      ownerId: obj.owner.id,
+      login: obj.owner.login,
+      repoId: obj.id,
+      repoUrl: obj.html_url,
+      fileName: obj.name,
+      forks: obj.forks
+    }, function (err, obj) {
+      if (err) {
+        return handleError(err);
+      }
+      console.log('Saved ', obj);
+    })
   })
   // TODO: Your code here
   // This function should save a repo or repos to
