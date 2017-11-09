@@ -29,7 +29,7 @@ class App extends React.Component {
     
   }
 
-  get() {
+  componentWillMount() {
     $.ajax({
       type: "GET",
       url: 'http://127.0.0.1:1128/repos',

@@ -2,7 +2,9 @@ import React from 'react';
 
 const RepoListEntry = (props) => (
   <div>
-    <li>{this.value}</li>
+    <li>
+      <h3>{props.value.login}</h3>
+      <a href={props.value.repoUrl}>{props.value.repoUrl}</a></li>
   </div>
 )
 

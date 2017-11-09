@@ -25,7 +25,7 @@ app.get('/repos', function (req, res) {
   console.log('here');
   // TODO - your code here!
   db.retrieve(function(repos) {
-    res.send({results: repos});
+    res.send(repos);
   })
   // This route should send back the top 25 repos
 });
