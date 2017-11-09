@@ -67,7 +67,7 @@ let save = (arrObj) => {
 
 let retrieve = (cb) => {
   Repo.find({}).sort({forks: -1}).exec(function (err, results) {
-      cb(results.slice(0,24));
+      cb(results.slice(0,25));
     })
 
 }

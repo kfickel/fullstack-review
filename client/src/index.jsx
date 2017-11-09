@@ -11,6 +11,7 @@ class App extends React.Component {
       repos: []
     }
     this.setState = this.setState.bind(this);
+    this.componentWillMount = this.componentWillMount.bind(this);
   }
 
   search (term) {
@@ -19,14 +20,34 @@ class App extends React.Component {
       type: "POST",
       url: 'http://127.0.0.1:1128/repos',
       data: term,
-      success: function(data) {
-        console.log('success', data);
+      success: (data) => {
+        this.get();
       },
       error: function(err) {
         console.log('Error ', err);
       }
     })
-    
+  }
+
+  get(){
+    $.ajax({
+      type: "GET",
+      url: 'http://127.0.0.1:1128/repos',
+      success: (data) => {
+        // repos = data;
+        console.log('success UPDATE', data);
+        this.update(data);
+      },
+      error: function(err) {
+        console.log('Error ', err);
+      }
+    })
+  }
+
+  update(repos){
+    this.setState({
+          repos: repos
+    });
   }
 
   componentWillMount() {
@@ -34,9 +55,6 @@ class App extends React.Component {
       type: "GET",
       url: 'http://127.0.0.1:1128/repos',
       success: (data) => {
-        // repos = data;
-
-        console.log('success', data);
         this.setState({
           repos: data
         });
