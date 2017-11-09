@@ -22,6 +22,7 @@ app.post('/repos', function (req, res) {
 });
 
 app.get('/repos', function (req, res) {
+  console.log('here');
   // TODO - your code here!
   db.retrieve(function(repos) {
     res.send({results: repos});

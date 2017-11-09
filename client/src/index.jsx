@@ -10,6 +10,7 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
+    this.setState = this.setState.bind(this);
   }
 
   search (term) {
@@ -26,6 +27,24 @@ class App extends React.Component {
       }
     })
     
+  }
+
+  get() {
+    $.ajax({
+      type: "GET",
+      url: 'http://127.0.0.1:1128/repos',
+      success: (data) => {
+        // repos = data;
+
+        console.log('success', data);
+        this.setState({
+          repos: data
+        });
+      },
+      error: function(err) {
+        console.log('Error ', err);
+      }
+    })
   }
 
   render () {
