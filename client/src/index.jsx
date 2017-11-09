@@ -10,7 +10,6 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-    this.setState = this.setState.bind(this);
     this.componentWillMount = this.componentWillMount.bind(this);
   }
 
@@ -34,36 +33,18 @@ class App extends React.Component {
       type: "GET",
       url: 'http://127.0.0.1:1128/repos',
       success: (data) => {
-        console.log('success UPDATE', data);
-        this.update(data);
+        this.setState({
+          repos: data
+        })
       },
       error: function(err) {
         console.log('Error ', err);
       }
     })
-  }
-
-  update(repos){
-    this.setState({
-          repos: repos
-    }, function() {
-      console.log(this.repos);
-    });
   }
 
   componentWillMount() {
-    $.ajax({
-      type: "GET",
-      url: 'http://127.0.0.1:1128/repos',
-      success: (data) => {
-        this.setState({
-          repos: data
-        });
-      },
-      error: function(err) {
-        console.log('Error ', err);
-      }
-    })
+    this.get();
   }
 
   render () {

@@ -14,10 +14,7 @@ let getReposByUsername = (username, cb) => {
   request(options, function (err, res, body) {
     if (!err && res.statusCode === 200) {
       var info = JSON.parse(body);
-      console.log('GITHUB')
       db.save(info, cb);
-
-
     } else {
       console.log('ERROR ', err);
     }

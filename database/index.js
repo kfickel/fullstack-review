@@ -2,27 +2,33 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/fetcher');
 
 let repoSchema = mongoose.Schema({
-  // TODO: your schema here!
-  //data comes in an array of objects
-  //owenerId = owner.id
   ownerId: Number,
-  //login = owner.login
   login: String,
-  //fileId = id
   repoId: Number,
-  //repoUrl = html_url
   repoUrl: String,
-  //fileName = name
-  fileName: String,
-  //forks = forks (for popularity)
+  repoName: String,
   forks: Number
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
+let createRepo = (obj) => {
+  Repo.create({
+    ownerId: obj.owner.id,
+    login: obj.owner.login,
+    repoId: obj.id,
+    repoUrl: obj.html_url,
+    repoName: obj.name,
+    forks: obj.forks
+  }, function (err, obj) {
+    if (err) {
+      return handleError(err);
+    }
+  })
+}
+
 let save = (arrObj, cb) => {
-  console.log('SAVE')
-  for (var i = 0 ; i < arrObj.length; i++) {
+  for (let i = 0 ; i < arrObj.length; i++) {
     let obj = arrObj[i];
     Repo.find({repoId: obj.id}, function(err, repo) {
       if (err) {
@@ -30,39 +36,15 @@ let save = (arrObj, cb) => {
       }
       if(repo[0] !== undefined) {
         if (repo[0].repoId !== obj.id){
-          Repo.create({
-            ownerId: obj.owner.id,
-            login: obj.owner.login,
-            repoId: obj.id,
-            repoUrl: obj.html_url,
-            fileName: obj.name,
-            forks: obj.forks
-          }, function (err, obj) {
-            if (err) {
-              return handleError(err);
-            }
-            console.log('Saved ', obj);
-          })
+          createRepo(obj);
         }
       } else {
-        Repo.create({
-            ownerId: obj.owner.id,
-            login: obj.owner.login,
-            repoId: obj.id,
-            repoUrl: obj.html_url,
-            fileName: obj.name,
-            forks: obj.forks
-          }, function (err, obj) {
-            if (err) {
-              return handleError(err);
-            }
-            console.log('Saved ', obj);
-          })
+        createRepo(obj)
+      }
+      if (i === arrObj.length - 1) {
+        cb();
       }
     })
-    if (i === arrObj.length - 1) {
-      cb();
-    }
   }
 }
 

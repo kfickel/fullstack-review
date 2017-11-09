@@ -11,18 +11,15 @@ app.post('/repos', function (req, res) {
     username += chunk;
   });
   req.on('end', function () {
-    console.log('HERE')
     github.getReposByUsername(username, function() {
       res.status(201).send('');
     });
   })
-  // This route should take the github username provided
-  // and get the repo information from the github API, then
-  // save the repo information in the database
 });
 
 app.get('/repos', function (req, res) {
   db.retrieve(function(repos) {
+    console.log('repos:', repos);
     res.send(repos);
   })
 });
